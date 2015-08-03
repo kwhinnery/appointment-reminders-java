@@ -1,0 +1,6 @@
+{
+    "title": "Appointment Reminders",
+    "repo": "TwilioDevEd/appointment-reminders-java",
+    "description": "Learn to implement appointment reminders functionality with Java and Spark",
+    "heroku": true
+}
