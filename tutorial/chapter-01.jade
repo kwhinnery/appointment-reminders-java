@@ -1,0 +1,46 @@
+.step(data-title='Application Functionality',
+  data-file='src/main/java/com/twilio/appointmentreminders/Server.java')
+  :markdown
+    ## Application's Functionality
+
+    This is a web application capable of creating appointment reminders, and sending SMS based
+    notifications using the Twilio SMS API.
+
+    Within the application you can create, delete and see a list of all the appointment reminders
+    created in the database. To create a new appointment, you must provide an appointment's name,
+    a phone number where the reminder will be sent, a date for the new appointment, the amount of
+    minutes prior to the appointment's date when you want to get the notification and finally, the
+    timezone for the new appointment.
+
+    Head to the app's [readme
+    file](https://github.com/TwilioDevEd/appointment-reminders-java/blob/master/readme.md)
+    to learn how to run the application in your own computer.
+
+.step(data-title='App Dependencies', data-file='pom.xml', data-highlight='66-118')
+  :markdown
+    ## Maven
+
+    The application uses Maven as a build automation and dependency management tool. All the
+    dependencies for the project are declared in the pom.xml file, and they can all be installed
+    by running `mvn clean install`.
+
+    ### The application has the following dependencies:
+
+    * [The Twilio Java Helper Library](https://www.twilio.com/docs/java/install) is what this
+    example application is showing you how to use. It includes al the methods necessary to
+    communicate with Twilio's API.
+    * [Spark micro framework](http://sparkjava.com/) used to serve the application using the Jetty
+    Server internally.
+    * [EclipseLink](http://www.eclipse.org/eclipselink/) is the implementation of JPA that the
+    application uses
+    * PostgreSQL JDBC Driver is used to connect to the DB, but this can be replaced with any DB
+    engine, making the appropriate changes in the code.
+    * The application uses Spark's implementation of the Mustache templating engine, but you can
+    chose the one you want from a list of
+    [Spark's compatible engines](http://sparkjava.com/documentation.html#views-templates).
+    * The application uses [JUnit](http://junit.org/) as the testing library.
+    * [Joda-Time](http://www.joda.org/joda-time/) is used to handle dates and timezones in the
+    application.
+    * [Quartz Job Scheduler](http://quartz-scheduler.org/) is responsible for scheduling the
+    jobs that will send the appointment reminders through SMS using Twilio's API.
+    * [Flyway](http://flywaydb.org/) handles Database migrations in the application.

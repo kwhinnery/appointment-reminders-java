@@ -1,25 +1,4 @@
+.chapter(data-title='Introduction')
+  include chapter-01
 .chapter(data-title='Application Structure')
-  .step(data-title='Application setup', data-file='src/main/java/com/twilio/appointmentreminders/Server.java')
-    :markdown
-      ## Application's Functionality
-
-      This is a web application capable of creating appointment reminders, and sending SMS based
-      notifications using the Twilio SMS API.
-
-      Within the application you can create, delete and see a list of all the appointment reminders
-      created in the database. To create a new appointment, you must provide an appointment's name,
-      a phone number where the reminder will be sent, a date for the new appointment, the amount of
-      minutes prior to the appointment's date when you want to get the notification and finally, the
-      timezone for the new appointment.
-
-      Head to the app's [readme
-      file](https://github.com/TwilioDevEd/appointment-reminders-java/blob/master/readme.md)
-      to learn how to run the application in your own computer.
-
-  .step(data-title='App Dependencies', data-file='pom.xml')
-    :markdown
-      ## Maven
-
-      The application uses Maven as a build automation and dependency management tool. All the
-      dependencies for the project are declared in the pom.xml file, and they can all be installed
-      by running `mvn clean install`.
+  include chapter-02

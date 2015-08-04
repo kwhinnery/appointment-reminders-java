@@ -1,0 +1,108 @@
+.step(data-title='Appointment Entity',
+  data-file='src/main/java/com/twilio/appointmentreminders/models/Appointment.java')
+  :markdown
+    ## Appointment Entity
+
+    The application saves appointments to the DB using EclipseLink's implementation of JPA. The
+    fields required to create a new appointment are:
+
+    1. `name` String
+    2. `phoneNumber` String
+    3. `delta` int
+    4. `date` String
+    5. `timezone` String
+
+    The `id` field is generated automatically when persisting an entity to the DB.
+    The date is always stored in the DB as UTC, but the getter of the date field makes the
+    conversion to the time zone provided when creating a new appointment.
+
+.step(data-title='Appointment Service',
+  data-file='src/main/java/com/twilio/appointmentreminders/models/AppointmentService.java')
+  :markdown
+    ## Appointment DAO
+
+    This class performs all the read write operations with appointment objects. The entity
+    manager is injected to this class, so it need to be created in the context using this class.
+
+.step(data-title='App Setup',
+  data-file='src/main/java/com/twilio/appointmentreminders/util/AppSetup.java')
+  :markdown
+    ## App Setup
+
+    This is a helper class that reads all the environment variables necessary for the application
+    to work correctly.
+
+    For DB access you just need to set the environment variable
+    ```
+    DATABASE_URL=
+    postgres://username:password@localhost:5432/appointments
+    ```
+    in that format.
+    Just remember that this class will convert that URL into a set of JDBC compatible parameters.
+    The reason for this, is that in order to automatically deploy to Heroku, the application
+    must receive the DB URL in that format.
+
+    This class also makes available to the application the environment variables related to
+    authorization in the Twilio API.
+
+.step(data-title='Server Main Class',
+  data-file='src/main/java/com/twilio/appointmentreminders/Server.java')
+  :markdown
+    ## Server Class
+
+    This is the main class of the application. Here you set up all the routes for the spark
+    application, and with the help of AppSetup class, the port in which the application runs.
+
+    This is the place where the `AppointmentService` containing the `EntityManager` is
+    instantiated, and injected to the Appointment controller.
+
+    The Quartz Scheduler is also instantiated here, and besides being injected to the controller
+    in order to schedule the reminders, we need to start an instance that will be running in the
+    background. Quartz is using basic configuration and storing jobs in RAM, but this can be
+    changed to fit your needs in
+    [quartz.properties file](https://github.com/TwilioDevEd/appointment-reminders-java/blob/
+    master/src/main/resources/META-INF/quartz.properties). You can check Quartz documentation
+    [here](http://quartz-scheduler.org/documentation)
+
+    All the routes are defined using Spark's `get` or `post` method accordingly. All the
+    parameters this two methods need are a String with the URL path, a method that will return a
+    route and in this case, an instance of `MustacheTemplateEngine`. The third parameter is only
+    necessary when a template will be rendered in the response. But, like in the `/delete` route,
+    if nothing is going to be rendered, you can only specify the controller method. Just remember
+    to check the return types of the methods in the controller, as they return different route
+    objects depending on the existence of a templating engine.
+
+.step(date-title='Appointment Controller',
+  data-file='src/main/java/com/twilio/appointmentreminders/controllers/AppointmentController.java')
+  :markdown
+    ## Appointment Controller
+
+    The `AppointmentController` controller class holds all the methods that respond to a route
+    declaration on the previous step. Here is where all the template rendering, database access and
+    job scheduling is done.
+
+    ### Scheduling a Job
+
+    The `scheduleJob` method on the controller uses the Quartz scheduler that was previously
+    injected to the class, to set up a job ahead of the current time. The job is scheduled using the
+    information that the new `Appointment` entity holds. The actual SMS sending task is delegated to
+    `AppointmentScheduler` and it's shown in the next step.
+
+.step(date-title='Appointment Scheduler', data-file='src/main/java/com/twilio/appointmentreminders/util/AppointmentScheduler.java')
+  :markdown
+    ## Appointment Job
+
+    Every time a a scheduled job is triggered by Quartz, a new instance of this class is created.
+    Here is where the application will fetch the stored appointment from the DB, based on the id
+    that was set when scheduling the job. Once we have the appointment information we get the Twilio
+    API credentials from the `AppSetup` class and finally use Twilio's SDK to actually send the SMS.
+    Actually sending the message is a single line of code!
+
+    ## All Done
+
+    And with a little code and a dash of configuration, we're ready to get automated
+    appointment reminders firing in our application. Good work!
+
+    As always, we'd love to hear your feedback on this tutorial. [Please reach out to
+    us](mailto:help@twilio.com) with any questions you might have.  Thanks for
+    checking out the tutorial!
