@@ -12,7 +12,7 @@
     4. `date` String
     5. `timezone` String
 
-    The `id` field is generated automatically when persisting an entity to the DB.
+    The `id` field is auto generated when an entity is persisted to the DB.
     The date is always stored in the DB as UTC, but the getter of the date field makes the
     conversion to the time zone provided when creating a new appointment.
 
@@ -22,15 +22,15 @@
     ## Appointment DAO
 
     This class performs all the read write operations with appointment objects. The entity
-    manager is injected to this class, so it need to be created in the context using this class.
+    manager is injected to this class, so it needs to be created in the context using this class.
 
 .step(data-title='App Setup',
   data-file='src/main/java/com/twilio/appointmentreminders/util/AppSetup.java')
   :markdown
     ## App Setup
 
-    This is a helper class that reads all the environment variables necessary for the application
-    to work correctly.
+    This is a helper class that reads all the environment variables required by the application
+    to work properly.
 
     For DB access you just need to set the environment variable
     ```
@@ -65,7 +65,7 @@
     [here](http://quartz-scheduler.org/documentation)
 
     All the routes are defined using Spark's `get` or `post` method accordingly. All the
-    parameters this two methods need are a String with the URL path, a method that will return a
+    parameters these two methods need are a String with the URL path, a method that will return a
     route and in this case, an instance of `MustacheTemplateEngine`. The third parameter is only
     necessary when a template will be rendered in the response. But, like in the `/delete` route,
     if nothing is going to be rendered, you can only specify the controller method. Just remember
@@ -96,7 +96,7 @@
     Here is where the application will fetch the stored appointment from the DB, based on the id
     that was set when scheduling the job. Once we have the appointment information we get the Twilio
     API credentials from the `AppSetup` class and finally use Twilio's SDK to actually send the SMS.
-    Actually sending the message is a single line of code!
+    In fact, sending the message requires a single line of code!
 
     ## All Done
 
